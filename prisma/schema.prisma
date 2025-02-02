@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// Admin Table
+model Admin {
+  adminId   String   @id @unique
+  name      String
+  email     String   @unique
+  password  String
+  phone     String   @unique
+  createdAt DateTime @default(now())
+}
+
+/// Customer Table
+model Customer {
+  customerId String   @id @unique
+  name       String
+  email      String   @unique
+  password   String
+  phone      String   @unique
+  address    String
+  nic        String   @unique
+  nicPhoto1  String
+  nicPhoto2  String
+  createdAt  DateTime @default(now())
+
+  // Relationships
+  bookings Booking[]
+  reviews  Review[]
+}
+
+/// Car Table
+model Car {
+  carNumberPlate  String           @id @unique
+  brand           String
+  model           String
+  year            Int
+  pricePerDay     Decimal
+  status          CarStatus
+  seatingCapacity Int
+  transmission    TransmissionType
+  fuelType        FuelType
+  features        Json?
+  image1          String?
+  image2          String?
+  image3          String?
+  createdAt       DateTime         @default(now())
+
+  // New Fields (Handled from Frontend)
+  minRentalPeriod Int @default(1)
+  maxRentalPeriod Int @default(28)
+
+  // Relationships
+  bookings Booking[]
+  reviews  Review[]
+}
+
+/// Booking Table
+model Booking {
+  bookingId      String        @id @unique
+  customerId     String
+  carNumberPlate String
+  startDate      DateTime
+  endDate        DateTime
+  location       String
+  status         BookingStatus @default(PENDING)
+  totalAmount    Decimal
+  createdAt      DateTime      @default(now())
+
+  // New Fields (Handled from Frontend)
+  minRentalPeriod Int
+  maxRentalPeriod Int
+
+  // Relationships
+  customer Customer @relation(fields: [customerId], references: [customerId])
+  car      Car      @relation(fields: [carNumberPlate], references: [carNumberPlate])
+  payment  Payment?
+}
+
+/// Payment Table
+model Payment {
+  paymentId String        @id @unique
+  bookingId String        @unique
+  amount    Decimal
+  method    PaymentMethod
+  status    PaymentStatus @default(PENDING)
+  createdAt DateTime      @default(now())
+
+  // Relationship
+  booking Booking @relation(fields: [bookingId], references: [bookingId])
+}
+
+/// Review Table
+model Review {
+  id             Int      @id @default(autoincrement())
+  customerId     String
+  carNumberPlate String
+  rating         Int
+  comment        String?
+  createdAt      DateTime @default(now())
+
+  // Relationships
+  customer Customer @relation(fields: [customerId], references: [customerId])
+  car      Car      @relation(fields: [carNumberPlate], references: [carNumberPlate])
+}
+
+/// ENUMS
+enum CarStatus {
+  AVAILABLE
+  RENTED
+  MAINTENANCE
+}
+
+enum TransmissionType {
+  AUTOMATIC
+  MANUAL
+}
+
+enum FuelType {
+  PETROL
+  DIESEL
+  HYBRID
+  ELECTRIC
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  PAYPAL
+  CASH
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+}
