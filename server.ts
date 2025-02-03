@@ -1,21 +1,53 @@
-import express from 'express';
-// import authRoutes, {authenticateToken} from "./routes/auth-routes";
+import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
-import cors from "cors";
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import jwt from 'jsonwebtoken';
 
 dotenv.config();
+
 const app = express();
 
 app.use(express.json());
 
-app.use(cors({
-    origin: 'http://localhost:5173',
-    methods: ['GET', 'POST'],
-    credentials: true,
-}));
+app.use(
+    cors({
+        origin: 'http://localhost:5173',
+        methods: ['GET', 'POST'],
+        credentials: true,
+    })
+);
+
+// Extend Request type to include `user`
+declare module 'express' {
+    interface Request {
+        user?: any;
+    }
+}
+
+// Middleware to verify JWT token
+app.use((req: Request, res: Response, next: NextFunction) => {
+    let token = req.header("Authorization");
+
+    if (token) {
+        token = token.replace("Bearer ", "");
+        jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
+            if (!err) {
+                req.user = decoded;
+            }
+        });
+    }
+    next();
+});
 
 
+app.use("/api/user",);
+app.use("/api/car",);
+app.use("/api/booking",);
+app.use("/api/payment",);
+app.use("/api/review",);
 
-app.listen(3003,()=>{
+
+app.listen(3003, () => {
     console.log("Server running on port 3003");
-})
+});
