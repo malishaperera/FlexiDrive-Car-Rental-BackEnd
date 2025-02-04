@@ -1,8 +1,7 @@
 export default interface Admin {
-  adminId: string;
-  name: string;
+  username: string;
   email: string;
   password: string;
   phone: string;
-  createdAt: Date;
+  role: string;
 }

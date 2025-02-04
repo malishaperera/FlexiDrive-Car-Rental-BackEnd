@@ -13,21 +13,28 @@ model Admin {
   name      String
   email     String   @unique
   password  String
-  phone     String   @unique
+  phone     String
+  role      Role     @default(ADMIN)
   createdAt DateTime @default(now())
+}
+
+// Enum for Roles
+enum Role {
+  ADMIN
+  ADMINISTRATIVE
 }
 
 /// Customer Table
 model Customer {
   customerId String   @id @unique
-  name       String
+  name       String?
   email      String   @unique
   password   String
-  phone      String   @unique
-  address    String
-  nic        String   @unique
-  nicPhoto1  String
-  nicPhoto2  String
+  phone      String?
+  address    String?
+  nic        String?  @unique
+  nicPhoto1  String?
+  nicPhoto2  String?
   createdAt  DateTime @default(now())
 
   // Relationships

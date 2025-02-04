@@ -3,6 +3,9 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import jwt from 'jsonwebtoken';
+import AuthRouter from "./routes/auth.router";
+
+
 
 dotenv.config();
 
@@ -18,34 +21,32 @@ app.use(
     })
 );
 
-// Extend Request type to include `user`
 declare module 'express' {
     interface Request {
         user?: any;
     }
 }
 
-// Middleware to verify JWT token
-app.use((req: Request, res: Response, next: NextFunction) => {
-    let token = req.header("Authorization");
+// app.use((req: Request, res: Response, next: NextFunction) => {
+//     let token = req.header("Authorization");
+//
+//     if (token) {
+//         token = token.replace("Bearer ", "");
+//         jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
+//             if (!err) {
+//                 req.user = decoded;
+//             }
+//         });
+//     }
+//     next();
+// });
 
-    if (token) {
-        token = token.replace("Bearer ", "");
-        jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
-            if (!err) {
-                req.user = decoded;
-            }
-        });
-    }
-    next();
-});
 
 
-app.use("/api/user",);
-app.use("/api/car",);
-app.use("/api/booking",);
-app.use("/api/payment",);
-app.use("/api/review",);
+app.use("/api/auth", AuthRouter)
+
+
+
 
 
 app.listen(3003, () => {
