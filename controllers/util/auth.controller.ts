@@ -4,17 +4,18 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import Admin from "../../models/Admin";
 import {createAdminUser, verifyAdminCredentials} from "../../databse/admin-client";
+import {generateAccessToken} from "./token.controller";
 
 dotenv.config();
 
-export const generateAccessToken = (adminId: string, email: string, role: string) => {
-    return jwt.sign(
-        { adminId, email, role },
-        process.env.JWT_SECRET as Secret,
-        { expiresIn: '45m' }
-
-    );
-};
+// export const generateAccessToken = (adminId: string, email: string, role: string) => {
+//     return jwt.sign(
+//         { adminId, email, role },
+//         process.env.JWT_SECRET as Secret,
+//         { expiresIn: '45m' }
+//
+//     );
+// };
 
 
 export const registerAdmin = async (req: Request, res: Response): Promise<any> => {
@@ -76,7 +77,7 @@ export const adminLogin = async (req: Request, res: Response): Promise<any> => {
                 .json({ message: 'Invalid credentials' });
         }
 
-        const accessToken = generateAccessToken(isAdmin.adminId, isAdmin.email, isAdmin.role);
+        const accessToken = generateAccessToken(isAdmin.adminId,isAdmin.name,isAdmin.email, isAdmin.role,isAdmin.phone);
         return res.status(200).json({
             userId: isAdmin.adminId,
             name: isAdmin.name,
@@ -91,28 +92,31 @@ export const adminLogin = async (req: Request, res: Response): Promise<any> => {
     }
 }
 
-export const refreshToken = async (req: Request, res: Response): Promise<any> => {
-    const refreshToken = req.header("Authorization")?.replace("Bearer ", "");
+// export const refreshToken = async (req: Request, res: Response): Promise<any> => {
+//     const refreshToken = req.header("Authorization")?.replace("Bearer ", "");
+//
+//     if (!refreshToken) {
+//         return res.status(401).json({ message: "No refresh token provided" });
+//     }
+//
+//     try {
+//         // Verify refresh token
+//         const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET as Secret) as { adminId: string, email: string, role: string };
+//
+//         // Generate new access token
+//         const accessNewToken = jwt.sign(
+//             { adminId: decoded.adminId, email: decoded.email, role: decoded.role },
+//             process.env.JWT_SECRET as Secret,
+//             { expiresIn: "2h" }
+//         );
+//
+//         return res.status(200).json({ accessNewToken });
+//
+//     } catch (err) {
+//         console.error("Error in refreshToken:", err);
+//         return res.status(403).json({ message: "Invalid or expired refresh token" });
+//     }
+// };
 
-    if (!refreshToken) {
-        return res.status(401).json({ message: "No refresh token provided" });
-    }
 
-    try {
-        // Verify refresh token
-        const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET as Secret) as { adminId: string, email: string, role: string };
 
-        // Generate new access token
-        const accessNewToken = jwt.sign(
-            { adminId: decoded.adminId, email: decoded.email, role: decoded.role },
-            process.env.JWT_SECRET as Secret,
-            { expiresIn: "2h" }
-        );
-
-        return res.status(200).json({ accessNewToken });
-
-    } catch (err) {
-        console.error("Error in refreshToken:", err);
-        return res.status(403).json({ message: "Invalid or expired refresh token" });
-    }
-};

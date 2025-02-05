@@ -2,10 +2,22 @@ import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import jwt from 'jsonwebtoken';
 import AuthRouter from "./routes/auth.router";
 import UserRouter from "./routes/customerRouter";
 
+// app.use((req: Request, res: Response, next: NextFunction) => {
+//     let token = req.header("Authorization");
+//
+//     if (token) {
+//         token = token.replace("Bearer ", "");
+//         jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
+//             if (!err) {
+//                 req.user = decoded;
+//             }
+//         });
+//     }
+//     next();
+// });
 
 
 dotenv.config();
@@ -28,26 +40,8 @@ declare module 'express' {
     }
 }
 
-// app.use((req: Request, res: Response, next: NextFunction) => {
-//     let token = req.header("Authorization");
-//
-//     if (token) {
-//         token = token.replace("Bearer ", "");
-//         jwt.verify(token, process.env.JWT_SECRET as string, (err, decoded) => {
-//             if (!err) {
-//                 req.user = decoded;
-//             }
-//         });
-//     }
-//     next();
-// });
-
-
-
 app.use("/api/auth", AuthRouter)
 app.use("/api/customer", UserRouter)
-
-
 
 
 
