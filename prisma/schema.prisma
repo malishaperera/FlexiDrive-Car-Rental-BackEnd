@@ -27,15 +27,16 @@ enum Role {
 /// Customer Table
 model Customer {
   customerId String   @id @unique
-  name       String?
+  name       String
   email      String   @unique
   password   String
-  phone      String?
+  phone      String
   address    String?
   nic        String?  @unique
   nicPhoto1  String?
   nicPhoto2  String?
   createdAt  DateTime @default(now())
+  role       String   @default("CUSTOMER")
 
   // Relationships
   bookings Booking[]

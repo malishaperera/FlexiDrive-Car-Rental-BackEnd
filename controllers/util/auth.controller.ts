@@ -12,6 +12,7 @@ export const generateAccessToken = (adminId: string, email: string, role: string
         { adminId, email, role },
         process.env.JWT_SECRET as Secret,
         { expiresIn: '45m' }
+
     );
 };
 
@@ -102,13 +103,13 @@ export const refreshToken = async (req: Request, res: Response): Promise<any> =>
         const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET as Secret) as { adminId: string, email: string, role: string };
 
         // Generate new access token
-        const accessToken = jwt.sign(
+        const accessNewToken = jwt.sign(
             { adminId: decoded.adminId, email: decoded.email, role: decoded.role },
             process.env.JWT_SECRET as Secret,
             { expiresIn: "2h" }
         );
 
-        return res.status(200).json({ accessToken });
+        return res.status(200).json({ accessNewToken });
 
     } catch (err) {
         console.error("Error in refreshToken:", err);

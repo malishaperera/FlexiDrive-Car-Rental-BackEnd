@@ -35,6 +35,6 @@ export async function verifyAdminCredentials(email: string) {
         return adminUser;
     } catch (err) {
         console.error("Error verifying admin credentials:", err);
-        return null;
+        throw new Error('Error verifying admin credentials');
     }
 }

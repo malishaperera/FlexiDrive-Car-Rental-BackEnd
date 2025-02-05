@@ -10,10 +10,10 @@
 // }
 
 export default interface Customer {
-  name: string | null;
+  name: string;
   email: string;
   password: string;
-  phone: string | null;
+  phone: string;
   address: string | null;
   nic: string | null;
   nicPhoto1: string | null;

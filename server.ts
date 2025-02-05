@@ -4,6 +4,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import jwt from 'jsonwebtoken';
 import AuthRouter from "./routes/auth.router";
+import UserRouter from "./routes/customerRouter";
 
 
 
@@ -44,6 +45,7 @@ declare module 'express' {
 
 
 app.use("/api/auth", AuthRouter)
+app.use("/api/customer", UserRouter)
 
 
 
