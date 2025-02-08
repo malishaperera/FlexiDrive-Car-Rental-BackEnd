@@ -131,6 +131,7 @@ export const getAllCustomer = async (req: Request, res: Response): Promise<any> 
     }
 }
 
+
 export const getCustomerById = async (req: Request, res: Response): Promise<any> => {
     const {customerId} = req.params;
 

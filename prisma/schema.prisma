@@ -45,7 +45,8 @@ model Customer {
 
 /// Car Table
 model Car {
-  carNumberPlate  String           @id @unique
+  carId           String           @id @unique
+  carNumberPlate  String           @unique
   brand           String
   model           String
   year            Int
@@ -71,15 +72,15 @@ model Car {
 
 /// Booking Table
 model Booking {
-  bookingId      String        @id @unique
-  customerId     String
-  carNumberPlate String
-  startDate      DateTime
-  endDate        DateTime
-  location       String
-  status         BookingStatus @default(PENDING)
-  totalAmount    Decimal
-  createdAt      DateTime      @default(now())
+  bookingId   String        @id @unique
+  customerId  String
+  carId       String
+  startDate   DateTime
+  endDate     DateTime
+  location    String
+  status      BookingStatus @default(PENDING)
+  totalAmount Decimal
+  createdAt   DateTime      @default(now())
 
   // New Fields (Handled from Frontend)
   minRentalPeriod Int
@@ -87,7 +88,8 @@ model Booking {
 
   // Relationships
   customer Customer @relation(fields: [customerId], references: [customerId])
-  car      Car      @relation(fields: [carNumberPlate], references: [carNumberPlate])
+  // car      Car      @relation(fields: [carNumberPlate], references: [carNumberPlate])
+  car      Car      @relation(fields: [carId], references: [carId])
   payment  Payment?
 }
 
@@ -106,16 +108,17 @@ model Payment {
 
 /// Review Table
 model Review {
-  id             Int      @id @default(autoincrement())
-  customerId     String
-  carNumberPlate String
-  rating         Int
-  comment        String?
-  createdAt      DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  customerId String
+  carId      String
+  rating     Int
+  comment    String?
+  createdAt  DateTime @default(now())
 
   // Relationships
   customer Customer @relation(fields: [customerId], references: [customerId])
-  car      Car      @relation(fields: [carNumberPlate], references: [carNumberPlate])
+  // car      Car      @relation(fields: [carNumberPlate], references: [carNumberPlate])
+  car      Car      @relation(fields: [carId], references: [carId])
 }
 
 /// ENUMS

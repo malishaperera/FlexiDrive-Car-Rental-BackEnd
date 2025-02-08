@@ -4,6 +4,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import AuthRouter from "./routes/auth.router";
 import UserRouter from "./routes/customerRouter";
+import CarRouter from "./routes/carRouter";
 
 // app.use((req: Request, res: Response, next: NextFunction) => {
 //     let token = req.header("Authorization");
@@ -42,6 +43,7 @@ declare module 'express' {
 
 app.use("/api/auth", AuthRouter)
 app.use("/api/customer", UserRouter)
+app.use("/api/car",CarRouter)
 
 
 

@@ -39,7 +39,20 @@ export async function generateCustomerId(): Promise<string> {
 
 
 //Car
+export async function generateCarId(): Promise<string> {
 
+    const lastCar = await prisma.car.findFirst({
+        orderBy: { carNumberPlate: 'desc' },
+    });
+
+    let nextId = "CAR-001";
+    if (lastCar && lastCar.carNumberPlate) {
+        const lastIdNumber = parseInt(lastCar.carNumberPlate.split("-")[1], 10);
+        const newIdNumber = lastIdNumber + 1;
+        nextId = `CAR-${String(newIdNumber).padStart(3, "0")}`;
+    }
+    return nextId;
+}
 
 
 

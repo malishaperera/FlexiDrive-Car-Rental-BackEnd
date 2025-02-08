@@ -1,4 +1,5 @@
 export default interface Car {
+  carId: string;
   carNumberPlate: string;
   brand: string;
   model: string;
@@ -12,7 +13,6 @@ export default interface Car {
   image1?: string;
   image2?: string;
   image3?: string;
-  createdAt: Date;
   minRentalPeriod: number;
   maxRentalPeriod: number;
 }
