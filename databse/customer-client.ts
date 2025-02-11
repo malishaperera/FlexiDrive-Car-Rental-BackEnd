@@ -19,7 +19,9 @@ export async function createCustomer(customer: Customer) {
                 address: null,
                 nic: null,
                 nicPhoto1: null,
-                nicPhoto2: null
+                nicPhoto2: null,
+                driverLicenseNum : null,
+                driverLicensePhoto: null
             },
         });
 

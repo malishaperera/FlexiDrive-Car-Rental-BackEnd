@@ -18,4 +18,6 @@ export default interface Customer {
   nic: string | null;
   nicPhoto1: string | null;
   nicPhoto2: string | null;
+  driverLicenseNum : String |null;
+  driverLicensePhoto: String |null;
 }

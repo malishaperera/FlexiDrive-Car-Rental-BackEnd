@@ -13,7 +13,7 @@ router.post("/refresh-token",refreshToken);
 // router.post("/refresh-token", CustomerAuthController.refreshToken);
 
 router.get("/",authenticateUser,authorizeAdmin,CustomerAuthController.getAllCustomer);
-router.get("/:customerId",authenticateUser,authorizeAdmin,authorizeCustomer,CustomerAuthController.getCustomerById);
+router.get("/:customerId",authenticateUser,authorizeAdmin,CustomerAuthController.getCustomerById);
 router.put("/:customerId",authenticateUser,authorizeAdmin,CustomerAuthController.updateCustomer);
 router.delete("/:customerId",authenticateUser,authorizeAdmin,CustomerAuthController.deleteCustomer);
 

@@ -18,25 +18,21 @@ model Admin {
   createdAt DateTime @default(now())
 }
 
-// Enum for Roles
-enum Role {
-  ADMIN
-  ADMINISTRATIVE
-}
-
 /// Customer Table
 model Customer {
-  customerId String   @id @unique
-  name       String
-  email      String   @unique
-  password   String
-  phone      String
-  address    String?
-  nic        String?  @unique
-  nicPhoto1  String?
-  nicPhoto2  String?
-  createdAt  DateTime @default(now())
-  role       String   @default("CUSTOMER")
+  customerId         String   @id @unique
+  name               String
+  email              String   @unique
+  password           String
+  phone              String
+  address            String?
+  nic                String?  @unique
+  nicPhoto1          String?
+  nicPhoto2          String?
+  driverLicenseNum   String?  @unique
+  driverLicensePhoto String?
+  createdAt          DateTime @default(now())
+  role               String   @default("CUSTOMER")
 
   // Relationships
   bookings Booking[]
@@ -61,7 +57,6 @@ model Car {
   image3          String?
   createdAt       DateTime         @default(now())
 
-  // New Fields (Handled from Frontend)
   minRentalPeriod Int @default(1)
   maxRentalPeriod Int @default(28)
 
@@ -82,13 +77,8 @@ model Booking {
   totalAmount Decimal
   createdAt   DateTime      @default(now())
 
-  // New Fields (Handled from Frontend)
-  minRentalPeriod Int
-  maxRentalPeriod Int
-
   // Relationships
   customer Customer @relation(fields: [customerId], references: [customerId])
-  // car      Car      @relation(fields: [carNumberPlate], references: [carNumberPlate])
   car      Car      @relation(fields: [carId], references: [carId])
   payment  Payment?
 }
@@ -117,11 +107,17 @@ model Review {
 
   // Relationships
   customer Customer @relation(fields: [customerId], references: [customerId])
-  // car      Car      @relation(fields: [carNumberPlate], references: [carNumberPlate])
   car      Car      @relation(fields: [carId], references: [carId])
 }
 
 /// ENUMS
+
+/// Enum for Roles
+enum Role {
+  ADMIN
+  ADMINISTRATIVE
+}
+
 enum CarStatus {
   AVAILABLE
   RENTED

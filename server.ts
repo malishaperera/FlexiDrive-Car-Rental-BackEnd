@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import AuthRouter from "./routes/auth.router";
 import UserRouter from "./routes/customerRouter";
 import CarRouter from "./routes/carRouter";
+import CarBookingRouter from "./routes/carBookingRouter";
 
 // app.use((req: Request, res: Response, next: NextFunction) => {
 //     let token = req.header("Authorization");
@@ -44,8 +45,8 @@ declare module 'express' {
 app.use("/api/auth", AuthRouter)
 app.use("/api/customer", UserRouter)
 app.use("/api/car",CarRouter)
-
-
+app.use("/api/booking",CarBookingRouter)
+// app.use("/api/booking",CarBookingPaymentRouter)
 
 app.listen(3003, () => {
     console.log("Server running on port 3003");

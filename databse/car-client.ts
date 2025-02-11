@@ -38,11 +38,20 @@ export async function carRegister(car: Car){
     }
 }
 
-export async function carsGetAll(){
-    try{
-        const cars = await prisma.car.findMany();
+export async function carsGetAll(onlyAvailable = false){
+    // try{
+    //     const cars = await prisma.car.findMany();
+    //     return cars;
+    // }catch (err){
+    //     console.error("Error in getAllCars:", err);
+    //     throw new Error('Error getting all cars');
+    // }
+    try {
+        const cars = await prisma.car.findMany({
+            where: onlyAvailable ? { status: 'RENTED' } : {}
+        });
         return cars;
-    }catch (err){
+    } catch (err) {
         console.error("Error in getAllCars:", err);
         throw new Error('Error getting all cars');
     }

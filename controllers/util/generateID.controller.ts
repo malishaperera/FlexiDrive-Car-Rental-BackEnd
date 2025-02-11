@@ -19,7 +19,6 @@ export async function generateAdminId(): Promise<string> {
     return nextId;
 }
 
-
 //Customer
 export async function generateCustomerId(): Promise<string> {
 
@@ -36,8 +35,6 @@ export async function generateCustomerId(): Promise<string> {
     return nextId;
 }
 
-
-
 //Car
 export async function generateCarId(): Promise<string> {
 
@@ -53,6 +50,39 @@ export async function generateCarId(): Promise<string> {
     }
     return nextId;
 }
+
+//car Booking
+
+// export async function generateBookingId(): Promise<string> {
+//
+//     const lastBooking = await prisma.booking.findFirst({
+//         orderBy: { bookingId: 'desc' },
+//     });
+//
+//     let nextId = "BK-001";
+//     if (lastBooking && lastBooking.bookingId) {
+//         const lastIdNumber = parseInt(lastBooking.bookingId.split("-")[1], 10);
+//         const newIdNumber = lastIdNumber + 1;
+//         nextId = `BK-${String(newIdNumber).padStart(3, "0")}`;
+//     }
+//     return nextId;
+// }
+export async function generateBookingId(): Promise<string> {
+    const lastBooking = await prisma.booking.findFirst({
+        orderBy: { bookingId: 'desc' },
+    });
+
+    let nextId = "BK-001";
+    if (lastBooking && lastBooking.bookingId) {
+        const lastIdNumber = parseInt(lastBooking.bookingId.split("-")[1], 10);
+        const newIdNumber = lastIdNumber + 1;
+        nextId = `BK-${String(newIdNumber).padStart(3, "0")}`;
+    }
+    return nextId;
+}
+
+
+
 
 
 

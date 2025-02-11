@@ -59,7 +59,7 @@ dotenv.config();
 export const registerCustomer  = async (req: Request, res: Response): Promise<any> => {
     const {name, email, password, phone} = req.body;
 
-    const customer:Customer = {name, email, password, phone, address: null, nic: null, nicPhoto1: null, nicPhoto2: null};
+    const customer:Customer = {name, email, password, phone, address: null, nic: null, nicPhoto1: null, nicPhoto2: null, driverLicenseNum: null, driverLicensePhoto: null};
 
     try {
 

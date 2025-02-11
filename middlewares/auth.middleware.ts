@@ -42,7 +42,6 @@ export enum UserRole {
 //     next();
 // };
 
-
 // export const authorizeAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
 //     if (!req.user || !["ADMIN", "ADMINISTRATIVE"].includes(req.user.role)) {
 //         return res.status(403).json({ message: "Access Denied: Admins only" });
@@ -65,8 +64,6 @@ export const authorizeCustomer = (req: Request, res: Response, next: NextFunctio
     }
     next();
 };
-
-
 
 // export const authenticateUser = async (req: Request, res: Response, next: NextFunction)=>{
 //     let token = req.header("Authorization")?.replace("Bearer ", "");

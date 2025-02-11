@@ -12,29 +12,6 @@ export const generateAccessToken = (id: string,name:string ,email: string, role:
     );
 };
 
-// export const refreshToken = (oldToken: string) => {
-//     try {
-//         const decoded = jwt.verify(oldToken, process.env.JWT_SECRET as Secret) as {
-//             id: string;
-//             name: string;
-//             email: string;
-//             role: string;
-//             phone:string;
-//         };
-//
-//         return jwt.sign(
-//             { id: decoded.id, email: decoded.email, role: decoded.role },
-//             process.env.JWT_SECRET as Secret,
-//             { expiresIn: "2h" }
-//         );
-//     } catch (err) {
-//         console.error("Error in refreshToken:", err);
-//         return null;
-//     }
-// };
-
-
-
 export const refreshToken = async (req: Request, res: Response): Promise<any> => {
     const refreshToken = req.header("Authorization")?.replace("Bearer ", "");
 
