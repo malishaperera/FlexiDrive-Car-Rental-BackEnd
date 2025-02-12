@@ -1,8 +1,6 @@
 import express from "express"
 import {authenticateUser, authorizeAdmin} from "../middlewares/auth.middleware";
 import * as BookingController from "../controllers/booking.controller"
-import {carBookingUpdate} from "../controllers/booking.controller";
-
 
 
 const router = express.Router();

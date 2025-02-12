@@ -61,15 +61,16 @@ model Car {
   maxRentalPeriod Int @default(28)
 
   // Relationships
-  bookings Booking[]
-  reviews  Review[]
+  // bookings Booking[]
+  reviews    Review[]
+  bookingCar BookingCar[]
 }
 
 /// Booking Table
 model Booking {
   bookingId   String        @id @unique
   customerId  String
-  carId       String
+  // carId       String
   startDate   DateTime
   endDate     DateTime
   location    String
@@ -78,9 +79,22 @@ model Booking {
   createdAt   DateTime      @default(now())
 
   // Relationships
-  customer Customer @relation(fields: [customerId], references: [customerId])
-  car      Car      @relation(fields: [carId], references: [carId])
-  payment  Payment?
+  customer   Customer     @relation(fields: [customerId], references: [customerId])
+  // car      Car      @relation(fields: [carId], references: [carId])
+  bookingCar BookingCar[]
+  payment    Payment?
+}
+
+/// BookingCar Table (Association Table for Many-to-Many)
+model BookingCar {
+  bookingId String
+  carId     String
+
+  // Relationships
+  booking Booking @relation(fields: [bookingId], references: [bookingId], onDelete: Cascade)
+  car     Car     @relation(fields: [carId], references: [carId], onDelete: Cascade)
+
+  @@id([bookingId, carId])
 }
 
 /// Payment Table
@@ -98,12 +112,13 @@ model Payment {
 
 /// Review Table
 model Review {
-  id         Int      @id @default(autoincrement())
+  id         Int          @id @default(autoincrement())
   customerId String
   carId      String
   rating     Int
   comment    String?
-  createdAt  DateTime @default(now())
+  status     ReviewStatus @default(PENDING)
+  createdAt  DateTime     @default(now())
 
   // Relationships
   customer Customer @relation(fields: [customerId], references: [customerId])
@@ -154,4 +169,10 @@ enum PaymentStatus {
   PENDING
   SUCCESS
   FAILED
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
 }

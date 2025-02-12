@@ -39,12 +39,12 @@ export async function generateCustomerId(): Promise<string> {
 export async function generateCarId(): Promise<string> {
 
     const lastCar = await prisma.car.findFirst({
-        orderBy: { carNumberPlate: 'desc' },
+        orderBy: { carId: 'desc' },
     });
 
     let nextId = "CAR-001";
-    if (lastCar && lastCar.carNumberPlate) {
-        const lastIdNumber = parseInt(lastCar.carNumberPlate.split("-")[1], 10);
+    if (lastCar && lastCar.carId) {
+        const lastIdNumber = parseInt(lastCar.carId.split("-")[1], 10);
         const newIdNumber = lastIdNumber + 1;
         nextId = `CAR-${String(newIdNumber).padStart(3, "0")}`;
     }
@@ -53,21 +53,8 @@ export async function generateCarId(): Promise<string> {
 
 //car Booking
 
-// export async function generateBookingId(): Promise<string> {
-//
-//     const lastBooking = await prisma.booking.findFirst({
-//         orderBy: { bookingId: 'desc' },
-//     });
-//
-//     let nextId = "BK-001";
-//     if (lastBooking && lastBooking.bookingId) {
-//         const lastIdNumber = parseInt(lastBooking.bookingId.split("-")[1], 10);
-//         const newIdNumber = lastIdNumber + 1;
-//         nextId = `BK-${String(newIdNumber).padStart(3, "0")}`;
-//     }
-//     return nextId;
-// }
 export async function generateBookingId(): Promise<string> {
+
     const lastBooking = await prisma.booking.findFirst({
         orderBy: { bookingId: 'desc' },
     });
@@ -81,6 +68,22 @@ export async function generateBookingId(): Promise<string> {
     return nextId;
 }
 
+
+
+// export async function generateBookingId(): Promise<string> {
+//     const lastBooking = await prisma.booking.findFirst({
+//         orderBy: { bookingId: 'desc' },
+//     });
+//
+//     let nextId = "BK-001";
+//     if (lastBooking && lastBooking.bookingId) {
+//         const lastIdNumber = parseInt(lastBooking.bookingId.split("-")[1], 10);
+//         const newIdNumber = lastIdNumber + 1;
+//         nextId = `BK-${String(newIdNumber).padStart(3, "0")}`;
+//     }
+//     return nextId;
+// }
+//
 
 
 
