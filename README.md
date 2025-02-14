@@ -22,5 +22,5 @@ This is the backend for **FlexiDrive Car Rental**, built with **Node.js**, **Exp
 
 1️⃣ **Clone the repository**  
    ```sh
-   git clone https://github.com/yourusername/FlexiDrive-Backend.git
+   git clone https://github.com/malishaperera/FlexiDrive-Car-Rental-BackEnd.git
    cd FlexiDrive-Backend
