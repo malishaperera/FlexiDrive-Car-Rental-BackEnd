@@ -1,21 +1,11 @@
-import jwt, { Secret } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import Admin from "../../models/Admin";
-import {createAdminUser, verifyAdminCredentials} from "../../databse/admin-client";
-import {generateAccessToken} from "./token.controller";
+import Admin from "../models/Admin";
+import {createAdminUser, verifyAdminCredentials} from "../databse/admin-client";
+import {generateAccessToken} from "./util/token.controller";
 
 dotenv.config();
-
-// export const generateAccessToken = (adminId: string, email: string, role: string) => {
-//     return jwt.sign(
-//         { adminId, email, role },
-//         process.env.JWT_SECRET as Secret,
-//         { expiresIn: '45m' }
-//
-//     );
-// };
 
 
 export const registerAdmin = async (req: Request, res: Response): Promise<any> => {
@@ -56,41 +46,41 @@ export const registerAdmin = async (req: Request, res: Response): Promise<any> =
     }
 };
 
-
-export const adminLogin = async (req: Request, res: Response): Promise<any> => {
-    const {email , password} = req.body
-
-    try {
-
-        let isAdmin = await verifyAdminCredentials(email);
-        if (!isAdmin) {
-            return res
-                .status(400)
-                .json({ message: 'Invalid credentials' });
-        }
-
-        const isMatch = await bcrypt.compare(password, isAdmin.password)
-
-        if (!isMatch) {
-            return res
-                .status(400)
-                .json({ message: 'Invalid credentials' });
-        }
-
-        const accessToken = generateAccessToken(isAdmin.adminId,isAdmin.name,isAdmin.email, isAdmin.role,isAdmin.phone);
-        return res.status(200).json({
-            userId: isAdmin.adminId,
-            name: isAdmin.name,
-            email: isAdmin.email,
-            role: isAdmin.role,
-            token: accessToken,
-
-        });
-
-    }catch (err){
-        return res.status(500).json({ message: "Internal Server Error" });
-    }
-}
+//this admin login
+// export const adminLogin = async (req: Request, res: Response): Promise<any> => {
+//     const {email , password} = req.body
+//
+//     try {
+//
+//         let isAdmin = await verifyAdminCredentials(email);
+//         if (!isAdmin) {
+//             return res
+//                 .status(400)
+//                 .json({ message: 'Invalid credentials' });
+//         }
+//
+//         const isMatch = await bcrypt.compare(password, isAdmin.password)
+//
+//         if (!isMatch) {
+//             return res
+//                 .status(400)
+//                 .json({ message: 'Invalid credentials' });
+//         }
+//
+//         const accessToken = generateAccessToken(isAdmin.adminId,isAdmin.name,isAdmin.email, isAdmin.role,isAdmin.phone);
+//         return res.status(200).json({
+//             userId: isAdmin.adminId,
+//             name: isAdmin.name,
+//             email: isAdmin.email,
+//             role: isAdmin.role,
+//             token: accessToken,
+//
+//         });
+//
+//     }catch (err){
+//         return res.status(500).json({ message: "Internal Server Error" });
+//     }
+// }
 
 // export const refreshToken = async (req: Request, res: Response): Promise<any> => {
 //     const refreshToken = req.header("Authorization")?.replace("Bearer ", "");
@@ -117,6 +107,3 @@ export const adminLogin = async (req: Request, res: Response): Promise<any> => {
 //         return res.status(403).json({ message: "Invalid or expired refresh token" });
 //     }
 // };
-
-
-

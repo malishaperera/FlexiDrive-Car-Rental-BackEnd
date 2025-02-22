@@ -16,7 +16,11 @@ export const refreshToken = async (req: Request, res: Response): Promise<any> =>
     const refreshToken = req.header("Authorization")?.replace("Bearer ", "");
 
     if (!refreshToken) {
-        return res.status(401).json({ message: "No refresh token provided" });
+        return res.status(401).json(
+            {
+                message: "No refresh token provided"
+            }
+        );
     }
 
     try {

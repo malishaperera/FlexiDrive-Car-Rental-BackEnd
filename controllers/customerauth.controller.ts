@@ -1,4 +1,3 @@
-import jwt, { Secret } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
@@ -13,47 +12,7 @@ import {generateAccessToken} from "./util/token.controller";
 
 dotenv.config();
 
-// export const generateAccessToken = (adminId: string, email: string, role: string,phone:string) => {
-//     return jwt.sign(
-//         { adminId, email, role,phone},
-//         process.env.JWT_SECRET as Secret,
-//         { expiresIn: '45m' }
-//
-//     );
-// };
 
-// export const refreshToken = async (req: Request, res: Response): Promise<any> => {
-//     const refreshToken = req.header("Authorization")?.replace("Bearer ", "");
-//
-//     if (!refreshToken) {
-//         return res.status(401).json({ message: "No refresh token provided" });
-//     }
-//
-//     try {
-//         const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET as Secret) as {
-//             email: string
-//         };
-//
-//         const customer = await verifyCustomerCredentials(decoded.email);
-//
-//         if (!customer) {
-//             return res.status(403).json({ message: "Invalid refresh token" });
-//         }
-//
-//
-//         const accessNewToken = jwt.sign(
-//             { customerId: customer.customerId, email: customer.email, role: customer.role },
-//             process.env.JWT_SECRET as Secret,
-//             { expiresIn: '2h' }
-//         )
-//
-//         return res.json({ accessToken: accessNewToken });
-//
-//     }catch (err){
-//         console.error("Error in refreshToken:", err);
-//         return res.status(403).json({ message: "Invalid or expired refresh token" });
-//     }
-// }
 
 
 export const registerCustomer  = async (req: Request, res: Response): Promise<any> => {
@@ -85,38 +44,40 @@ export const registerCustomer  = async (req: Request, res: Response): Promise<an
     }
 }
 
-export const customerLogin = async (req: Request, res: Response): Promise<any> => {
-    const {email , password} = req.body;
 
-    try{
-        let isCustomer = await verifyCustomerCredentials(email);
-        if (isCustomer == null) {
-            return res.status(401).json({ message: 'Invalid credentials' });
-        }
-
-        const isMatch = await bcrypt.compare(password, isCustomer.password);
-        if (!isMatch) {
-            // return res.status(401).json({ message: 'Invalid credentials' });
-            return res.status(401).json({ message: 'Invalid credentials' });
-
-        }
-
-        const accessToken = generateAccessToken(isCustomer.customerId, isCustomer.name,isCustomer.email, isCustomer.role,isCustomer.phone);
-        return res.status(200).json({
-            customerId: isCustomer.customerId,
-            name: isCustomer.name,
-            email: isCustomer.email,
-            phone: isCustomer.phone,
-            token: accessToken
-        });
-    }catch (err){
-        console.error("Error in customerLogin:", err);
-        return res.status(500).json({
-            message: 'Internal Server Error',
-            error: err,
-        });
-    }
-}
+//this customer login
+// export const customerLogin = async (req: Request, res: Response): Promise<any> => {
+//     const {email , password} = req.body;
+//
+//     try{
+//         let isCustomer = await verifyCustomerCredentials(email);
+//         if (isCustomer == null) {
+//             return res.status(401).json({ message: 'Invalid credentials' });
+//         }
+//
+//         const isMatch = await bcrypt.compare(password, isCustomer.password);
+//         if (!isMatch) {
+//             // return res.status(401).json({ message: 'Invalid credentials' });
+//             return res.status(401).json({ message: 'Invalid credentials' });
+//
+//         }
+//
+//         const accessToken = generateAccessToken(isCustomer.customerId, isCustomer.name,isCustomer.email, isCustomer.role,isCustomer.phone);
+//         return res.status(200).json({
+//             customerId: isCustomer.customerId,
+//             name: isCustomer.name,
+//             email: isCustomer.email,
+//             phone: isCustomer.phone,
+//             token: accessToken
+//         });
+//     }catch (err){
+//         console.error("Error in customerLogin:", err);
+//         return res.status(500).json({
+//             message: 'Internal Server Error',
+//             error: err,
+//         });
+//     }
+// }
 
 export const getAllCustomer = async (req: Request, res: Response): Promise<any> => {
     try{

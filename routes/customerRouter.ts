@@ -8,9 +8,11 @@ const router = express.Router();
 
 
 router.post('/customerRegister',CustomerAuthController.registerCustomer);
-router.post("/customerLogin", CustomerAuthController.customerLogin);
+
+// router.post("/customerLogin", CustomerAuthController.customerLogin);//this
+
 router.post("/refresh-token",refreshToken);
-// router.post("/refresh-token", CustomerAuthController.refreshToken);
+
 
 router.get("/",authenticateUser,authorizeAdmin,CustomerAuthController.getAllCustomer);
 router.get("/:customerId",authenticateUser,authorizeAdmin,CustomerAuthController.getCustomerById);

@@ -2,10 +2,13 @@ import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import AuthRouter from "./routes/auth.router";
+import AuthRouter from "./routes/admin.router";
 import UserRouter from "./routes/customerRouter";
 import CarRouter from "./routes/carRouter";
 import CarBookingRouter from "./routes/carBookingRouter";
+import LoginRouter from "./routes/login.router";
+import CustomerRouter from "./routes/customerRouter";
+import AdminRouter from "./routes/admin.router";
 
 // app.use((req: Request, res: Response, next: NextFunction) => {
 //     let token = req.header("Authorization");
@@ -28,25 +31,35 @@ const app = express();
 
 app.use(express.json());
 
+// app.use(
+//     cors({
+//         origin: 'http://localhost:5173',
+//         methods: ['GET', 'POST'],
+//         credentials: true,
+//     })
+// );
+
 app.use(
     cors({
-        origin: 'http://localhost:5173',
-        methods: ['GET', 'POST'],
+        origin: true,  // Allow any origin
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
         credentials: true,
     })
 );
+
 
 declare module 'express' {
     interface Request {
         user?: any;
     }
 }
-
-app.use("/api/auth", AuthRouter)
-app.use("/api/customer", UserRouter)
+app.use("/api/auth/login",LoginRouter)
+app.use("/api/auth", AdminRouter)
+app.use("/api/customer", CustomerRouter)
 app.use("/api/car",CarRouter)
 app.use("/api/booking",CarBookingRouter)
 // app.use("/api/booking",CarBookingPaymentRouter)
+
 
 app.listen(3003, () => {
     console.log("Server running on port 3003");

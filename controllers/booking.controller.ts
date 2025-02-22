@@ -2,9 +2,6 @@ import dotenv from "dotenv";
 import {Request, Response} from "express";
 import {bookingAll, createBooking, isBookingCredentials} from "../databse/booking-client";
 import {isCustomerCredentials} from "../databse/customer-client";
-import {isCarCredentials} from "../databse/car-client";
-import {generateBookingId} from "./util/generateID.controller";
-import Booking from "../models/Booking";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
