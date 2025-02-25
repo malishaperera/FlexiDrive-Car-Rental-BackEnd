@@ -5,7 +5,7 @@ import {authenticateUser, authorizeAdmin, authorizeCustomer} from "../middleware
 const router = express.Router()
 
 router.post("/carRegister", authenticateUser, authorizeAdmin, CarController.registerCar)
-router.get("/", authenticateUser, authorizeAdmin, CarController.getAllCars)
+router.get("/", authenticateUser, CarController.getAllCars)
 router.get("/available", authenticateUser, authorizeCustomer, CarController.getAvailableCar)
 router.get("/:carId", authenticateUser, authorizeAdmin, CarController.getCarById)
 router.put("/:carId", authenticateUser, authorizeAdmin, CarController.updateCar)

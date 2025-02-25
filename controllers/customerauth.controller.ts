@@ -103,6 +103,7 @@ export const getCustomerById = async (req: Request, res: Response): Promise<any>
         if (customer == null) {
             return res.status(404).json({ message: 'Customer not found' });
         }
+        console.log(customer)
         return res.status(200).json(customer);
     }catch (err){
         console.error("Error in getCustomerById:", err);
@@ -116,6 +117,8 @@ export const getCustomerById = async (req: Request, res: Response): Promise<any>
 export const updateCustomer = async (req: Request, res: Response): Promise<any> => {
     const customerId = req.params.customerId;
     const customer:Customer = req.body;
+
+    console.log(req.body);
 
     try{
         const isCustomer = await isCustomerCredentials(customerId);

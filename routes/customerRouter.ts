@@ -15,8 +15,8 @@ router.post("/refresh-token",refreshToken);
 
 
 router.get("/",authenticateUser,authorizeAdmin,CustomerAuthController.getAllCustomer);
-router.get("/:customerId",authenticateUser,authorizeAdmin,CustomerAuthController.getCustomerById);
-router.put("/:customerId",authenticateUser,authorizeAdmin,CustomerAuthController.updateCustomer);
+router.get("/:customerId",authenticateUser,CustomerAuthController.getCustomerById);
+router.put("/:customerId",authenticateUser,CustomerAuthController.updateCustomer);
 router.delete("/:customerId",authenticateUser,authorizeAdmin,CustomerAuthController.deleteCustomer);
 
 export default router;

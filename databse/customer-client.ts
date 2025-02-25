@@ -83,7 +83,12 @@ export async function customerUpdate(customerId: string, customer: Customer) {
                 address: customer.address,
                 nic: customer.nic,
                 nicPhoto1: customer.nicPhoto1,
-                nicPhoto2: customer.nicPhoto2
+                nicPhoto2: customer.nicPhoto2,
+                driverLicenseNum : customer.driverLicenseNum,
+                driverLicensePhoto: customer.driverLicensePhoto || null
+
+
+
             }
         });
         return updatedCustomer;
