@@ -110,11 +110,25 @@ export const deleteCar = async (req: Request, res: Response): Promise<any> => {
 }
 
 
+// export const getAvailableCar = async (req: Request, res: Response): Promise<any> => {
+//     try {
+//         const cars = await carsGetAll(true);
+//
+//         if (cars.length === 0) {
+//             return res.status(404).json({ message: "No available cars found" });
+//         }
+//         return res.json(cars);
+//     } catch (error) {
+//         console.error("Error fetching available cars:", error);
+//         return res.status(500).json({ message: "Internal Server Error" });
+//     }
+// };
+
 export const getAvailableCar = async (req: Request, res: Response): Promise<any> => {
     try {
         const cars = await carsGetAll(true);
 
-        if (cars.length === 0) {
+        if (!cars || cars.length === 0) {
             return res.status(404).json({ message: "No available cars found" });
         }
         return res.json(cars);
