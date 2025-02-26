@@ -70,17 +70,22 @@ model Car {
 model Booking {
   bookingId   String        @id @unique
   customerId  String
-  // carId       String
-  startDate   DateTime
-  endDate     DateTime
-  location    String
+
+  pickupLocation String
+  pickupDate    DateTime
+  returnDate    DateTime
+  pickupTime    String
+  returnTime    String
+
+  // startDate   DateTime
+  // endDate     DateTime
+  // location    String
   status      BookingStatus @default(PENDING)
   totalAmount Decimal
   createdAt   DateTime      @default(now())
 
   // Relationships
   customer   Customer     @relation(fields: [customerId], references: [customerId])
-  // car      Car      @relation(fields: [carId], references: [carId])
   bookingCar BookingCar[]
   payment    Payment?
 }

@@ -1,24 +1,26 @@
 import { PrismaClient } from "@prisma/client";
-import {generateBookingId} from "../controllers/util/generateID.controller";
-import {isCarCredentials} from "./car-client";
+import { generateBookingId } from "../controllers/util/generateID.controller";
+import { isCarCredentials } from "./car-client";
 
 const prisma = new PrismaClient();
 
 export const createBooking = async (
     carIds: string[],
     customerId: string,
-    startDate: string,
-    endDate: string,
-    location: string
+    pickupDate: string,
+    returnDate: string,
+    pickupTime: string,
+    returnTime: string,
+    pickupLocation: string
 ) => {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+    const pickup = new Date(pickupDate);
+    const returnD = new Date(returnDate);
 
-    if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+    if (isNaN(pickup.getTime()) || isNaN(returnD.getTime())) {
         throw new Error('Invalid date format');
     }
 
-    const rentalDays = Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+    const rentalDays = Math.ceil((returnD.getTime() - pickup.getTime()) / (1000 * 60 * 60 * 24));
 
     try {
         const transaction = await prisma.$transaction(async (prisma) => {
@@ -26,13 +28,16 @@ export const createBooking = async (
 
             let totalAmount = 0;
 
+            // Create the booking entry
             const booking = await prisma.booking.create({
                 data: {
                     bookingId,
                     customerId,
-                    startDate: start,
-                    endDate: end,
-                    location,
+                    pickupLocation,
+                    pickupDate: pickup,
+                    returnDate: returnD,
+                    pickupTime,
+                    returnTime,
                     status: 'PENDING',
                     totalAmount: 0,
                 },
@@ -57,41 +62,42 @@ export const createBooking = async (
 
             await Promise.all(carBookingPromises);
 
-            await prisma.booking.update({
+            const updatedBooking = await prisma.booking.update({
                 where: { bookingId },
                 data: { totalAmount },
             });
 
-            return booking;
+            return updatedBooking;
         });
 
         return transaction;
     } catch (err) {
-        throw new Error('Error bookings',);
+        console.error('Error during booking creation:', err);
+        throw new Error('Error creating booking');
     }
 };
 
 export async function bookingAll() {
-    try{
-        let bookings = await prisma.booking.findMany();
+    try {
+        const bookings = await prisma.booking.findMany();
         return bookings;
-    }catch (err){
+    } catch (err) {
         console.error('Error in getAllBookings:', err);
         throw new Error('Error getting all bookings');
     }
 }
 
 export async function isBookingCredentials(bookingId: string) {
-    try{
+    try {
         if (!bookingId) {
             throw new Error("bookingId is required");
         }
 
-        let booking = await prisma.booking.findUnique({
+        const booking = await prisma.booking.findUnique({
             where: { bookingId: bookingId }
         });
         return booking;
-    }catch (err){
+    } catch (err) {
         console.error("Error in isBookingCredentials:", err);
         throw new Error('Error verifying booking credentials');
     }

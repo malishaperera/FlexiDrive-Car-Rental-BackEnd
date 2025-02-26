@@ -93,4 +93,3 @@ export async function generateBookingId(): Promise<string> {
 
 
 
-
