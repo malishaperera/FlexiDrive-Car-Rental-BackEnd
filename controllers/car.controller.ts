@@ -8,6 +8,7 @@ dotenv.config();
 
 export const registerCar = async (req: Request, res: Response): Promise<any> => {
     // const{carNumberPlate,brand,carModel, carYear, carColor, carType, carStatus, carPrice} = req.body;
+    console.log(req.body);
     try{
         const car:Car = {
             carId: req.body.carId,
@@ -66,6 +67,8 @@ export const updateCar = async (req: Request, res: Response): Promise<any> => {
 
     const  carId = req.params.carId;
     const car:Car = req.body;
+
+    console.log(req.body);
 
     try {
         const isCar = await isCarCredentials(carId);

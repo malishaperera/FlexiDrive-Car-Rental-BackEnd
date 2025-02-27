@@ -82,6 +82,7 @@ export const registerCustomer  = async (req: Request, res: Response): Promise<an
 export const getAllCustomer = async (req: Request, res: Response): Promise<any> => {
     try{
         const customers = await getAllCustomers();
+        console.log(customers)
         return res.status(200).json(customers);
     }catch (err){
         console.error("Error in getAllCustomer:", err);
