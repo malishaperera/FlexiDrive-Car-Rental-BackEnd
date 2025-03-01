@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import { Request, Response } from "express";
-import { bookingAll, createBooking, isBookingCredentials } from "../databse/booking-client";
+import {bookingAll, bookingUpdate, createBooking, isBookingCredentials} from "../databse/booking-client";
 import { isCustomerCredentials } from "../databse/customer-client";
 
 dotenv.config();
@@ -38,6 +38,7 @@ export const carBooking = async (req: Request, res: Response): Promise<any> => {
 
 export const getAllBookings = async (req: Request, res: Response): Promise<any> => {
     try {
+        console.log("mekedabn")
         const carBooking = await bookingAll();
         return res.status(200).json(carBooking);
     } catch (err) {
@@ -58,3 +59,45 @@ export const getBookingById = async (req: Request, res: Response): Promise<any> 
         return res.status(500).json({ message: "Internal Server Error" });
     }
 };
+
+// export const carBookingUpdate = async (req: Request, res: Response): Promise<any> => {
+//     const bookingId = req.params.bookingId;
+//     const booking = req.body;
+//
+//     try {
+//         const isBooking = await isBookingCredentials(bookingId);
+//         if (isBooking == null) {
+//             return res.status(404).json({ message: 'Booking not found' });
+//         }
+//
+//         const updatedBooking = await bookingUpdate(bookingId, booking);
+//         return res.status(200).json(updatedBooking);
+//     } catch (err) {
+//         return res.status(500).json({ message: "Internal Server Error" });
+//     }
+// }
+
+export const carBookingUpdate = async (req: Request, res: Response): Promise<any> => {
+    const bookingId = req.params.bookingId;
+
+    console.log("bookingId", bookingId);
+    if (!bookingId) {
+        return res.status(400).json({ message: 'bookingId is required' });
+    }
+
+    const booking = req.body;
+
+    try {
+        const isBooking = await isBookingCredentials(bookingId);  // Pass the bookingId here
+        if (isBooking == null) {
+            return res.status(404).json({ message: 'Booking not found' });
+        }
+
+        const updatedBooking = await bookingUpdate(bookingId, booking);
+        return res.status(200).json(updatedBooking);
+    } catch (err) {
+        console.error("Error updating booking:", err);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+

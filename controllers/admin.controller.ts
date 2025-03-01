@@ -2,8 +2,16 @@ import dotenv from 'dotenv';
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import Admin from "../models/Admin";
-import {createAdminUser, verifyAdminCredentials} from "../databse/admin-client";
+import {
+    adminDelete,
+    adminUpdate,
+    createAdminUser,
+    getAllAdmins,
+    isAdminCredentials,
+    verifyAdminCredentials
+} from "../databse/admin-client";
 import {generateAccessToken} from "./util/token.controller";
+import {isCustomerCredentials} from "../databse/customer-client";
 
 dotenv.config();
 
@@ -12,6 +20,8 @@ export const registerAdmin = async (req: Request, res: Response): Promise<any> =
     const { username, email, password, phone, role } = req.body;
 
     const admin: Admin = { username, email, password, phone, role };
+
+    // console.log("csc",req.body);
 
     try {
         let registration = await verifyAdminCredentials(admin.email);
@@ -45,6 +55,96 @@ export const registerAdmin = async (req: Request, res: Response): Promise<any> =
         });
     }
 };
+
+
+export const getAllAdmin = async (req: Request, res: Response): Promise<any> => {
+    try {
+        const admins = await getAllAdmins();
+        return res.status(200).json(admins);
+
+    } catch (err) {
+        console.error("Error in getAllAdmins:", err);
+        return res.status(500).json({
+            message: 'Internal Server Error',
+            error: err,
+        });
+    }
+}
+
+export const getAdminById = async (req: Request, res: Response): Promise<any> => {
+    const adminId = req.params.adminId;
+    try {
+        const admin = await isAdminCredentials(adminId);
+        if (admin == null) {
+            return res.status(404).json({ message: 'Admin not found' });
+        }
+        return res.status(200).json(admin);
+    } catch (err) {
+        console.error("Error in getAdminById:", err);
+        return res.status(500).json({
+            message: 'Internal Server Error',
+            error: err,
+        });
+    }
+}
+
+
+export const updateAdmin = async (req: Request, res: Response): Promise<any> => {
+    console.log(req.body,"Heyyyyy");
+    const adminId = req.params.adminId;
+    const admin: Admin = req.body;
+    try {
+        const isAdmin = await isAdminCredentials(adminId);
+        if (isAdmin == null) {
+            return res.status(404).json({ message: 'Admin not found' });
+        }
+        const updatedAdmin = await adminUpdate(adminId, admin);
+        return res.status(200).json(updatedAdmin);
+    } catch (err) {
+        console.error("Error in updateAdmin:", err);
+        return res.status(500).json({
+            message: 'Internal Server Error',
+            error: err,
+        });
+    }
+}
+
+
+export const deleteAdmin = async (req: Request, res: Response): Promise<any> => {
+    const adminId = req.params.adminId;
+    try {
+        const isAdmin = await isAdminCredentials(adminId);
+        if (isAdmin == null) {
+            return res.status(404).json({ message: 'Admin not found' });
+        }
+        const deletedAdmin = await adminDelete(adminId);
+        return res.status(200).json({
+            message: 'Admin deleted successfully',
+        });
+    } catch (err) {
+        console.error("Error in deleteAdmin:", err);
+        return res.status(500).json({
+            message: 'Internal Server Error',
+            error: err,
+        });
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //this admin login
 // export const adminLogin = async (req: Request, res: Response): Promise<any> => {

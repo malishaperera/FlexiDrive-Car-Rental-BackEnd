@@ -54,7 +54,7 @@ declare module 'express' {
     }
 }
 app.use("/api/auth/login",LoginRouter)
-app.use("/api/auth", AdminRouter)
+app.use("/api/auth/admin", AdminRouter)
 app.use("/api/customer", CustomerRouter)
 app.use("/api/car",CarRouter)
 app.use("/api/booking",CarBookingRouter)

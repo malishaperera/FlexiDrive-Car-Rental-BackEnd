@@ -5,12 +5,10 @@ import * as BookingController from "../controllers/booking.controller"
 
 const router = express.Router();
 
-
-router.post("/carBooking", authenticateUser, BookingController.carBooking)
-
-router.get("/", authenticateUser,authorizeAdmin, BookingController.getAllBookings);
+router.post("/carBooking", authenticateUser, BookingController.carBooking);
+router.get("/view", authenticateUser,authorizeAdmin, BookingController.getAllBookings);
 router.get("/:id", authenticateUser,authorizeAdmin, BookingController.getBookingById);
-// router.put("/:id", authenticateUser,authorizeAdmin, BookingController.carBookingUpdate);
+router.put("/:bookingId", authenticateUser, authorizeAdmin, BookingController.carBookingUpdate);
 
 
 

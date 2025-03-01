@@ -77,9 +77,28 @@ export const createBooking = async (
     }
 };
 
+// export async function bookingAll() {
+//     try {
+//         const bookings = await prisma.booking.findMany();
+//         return bookings;
+//     } catch (err) {
+//         console.error('Error in getAllBookings:', err);
+//         throw new Error('Error getting all bookings');
+//     }
+// }
+
 export async function bookingAll() {
     try {
-        const bookings = await prisma.booking.findMany();
+        // Fetch all bookings and include the associated BookingCar and Car data
+        const bookings = await prisma.booking.findMany({
+            include: {
+                bookingCar: {
+                    include: {
+                        car: true // This will include the related car details
+                    }
+                }
+            }
+        });
         return bookings;
     } catch (err) {
         console.error('Error in getAllBookings:', err);
@@ -100,5 +119,19 @@ export async function isBookingCredentials(bookingId: string) {
     } catch (err) {
         console.error("Error in isBookingCredentials:", err);
         throw new Error('Error verifying booking credentials');
+    }
+}
+
+
+export async function bookingUpdate(bookingId: string, booking: any) {
+    try {
+        const updatedBooking = await prisma.booking.update({
+            where: { bookingId: bookingId },
+            data: booking
+        });
+        return updatedBooking;
+    } catch (err) {
+        console.error("Error in bookingUpdate:", err);
+        throw new Error('Error updating booking');
     }
 }

@@ -82,7 +82,7 @@ export const registerCustomer  = async (req: Request, res: Response): Promise<an
 export const getAllCustomer = async (req: Request, res: Response): Promise<any> => {
     try{
         const customers = await getAllCustomers();
-        console.log(customers)
+        console.log(customers,"cscs")
         return res.status(200).json(customers);
     }catch (err){
         console.error("Error in getAllCustomer:", err);
@@ -116,6 +116,8 @@ export const getCustomerById = async (req: Request, res: Response): Promise<any>
 }
 
 export const updateCustomer = async (req: Request, res: Response): Promise<any> => {
+
+
     const customerId = req.params.customerId;
     const customer:Customer = req.body;
 
