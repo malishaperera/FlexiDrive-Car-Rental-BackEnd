@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post("/carBooking", authenticateUser, BookingController.carBooking);
 router.get("/view", authenticateUser,authorizeAdmin, BookingController.getAllBookings);
-router.get("/:id", authenticateUser,authorizeAdmin, BookingController.getBookingById);
+router.get("/:bookingId", authenticateUser,authorizeAdmin, BookingController.getBookingById);
 router.put("/:bookingId", authenticateUser, authorizeAdmin, BookingController.carBookingUpdate);
 
 

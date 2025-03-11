@@ -123,15 +123,47 @@ export async function isBookingCredentials(bookingId: string) {
 }
 
 
+// export async function bookingUpdate(bookingId: string, booking: any) {
+//     try {
+//         const updatedBooking = await prisma.booking.update({
+//             where: { bookingId: bookingId },
+//             data: booking
+//         });
+//         return updatedBooking;
+//     } catch (err) {
+//         console.error("Error in bookingUpdate:", err);
+//         throw new Error('Error updating booking');
+//     }
+// }
 export async function bookingUpdate(bookingId: string, booking: any) {
     try {
         const updatedBooking = await prisma.booking.update({
-            where: { bookingId: bookingId },
-            data: booking
+            where: {
+                bookingId: bookingId, // Use the dynamic bookingId
+            },
+            data: {
+                customerId: booking.customerId,
+                pickupLocation: booking.pickupLocation,
+                pickupDate: booking.pickupDate,
+                returnDate: booking.returnDate,
+                pickupTime: booking.pickupTime,
+                returnTime: booking.returnTime,
+                status: booking.status,
+                totalAmount: booking.totalAmount,
+                // Assuming you want to update the related cars
+                bookingCar: {
+                    // Use connect to link existing cars by their carId
+                    connect: booking.bookingCar.map((car: any) => ({
+                        carId: car.carId,
+                    })),
+                },
+            },
         });
+
+        console.log("Booking updated successfully", updatedBooking);
         return updatedBooking;
-    } catch (err) {
-        console.error("Error in bookingUpdate:", err);
-        throw new Error('Error updating booking');
+    } catch (error) {
+        console.error("Error updating booking:", error);
+        throw new Error("Error updating booking");
     }
 }
