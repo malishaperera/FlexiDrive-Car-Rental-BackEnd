@@ -143,6 +143,7 @@ export const updateCustomer = async (req: Request, res: Response): Promise<any> 
 export const deleteCustomer = async (req: Request, res: Response): Promise<any> => {
     const customerId = req.params.customerId;
 
+    console.log("customerId",customerId);
     try{
         const customer = await isCustomerCredentials(customerId);
         if (customer == null) {

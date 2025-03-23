@@ -15,7 +15,7 @@ export const registerCar = async (req: Request, res: Response): Promise<any> => 
             carNumberPlate: req.body.carNumberPlate,
             brand: req.body.brand,
             model: req.body.model,
-            year: req.body.year,
+            year: parseInt(req.body.year),
             pricePerDay: req.body.pricePerDay,
             status: req.body.status,
             seatingCapacity: req.body.seatingCapacity,
@@ -131,10 +131,10 @@ export const getAvailableCar = async (req: Request, res: Response): Promise<any>
     try {
         const cars = await carsGetAll(true);
 
-        if (!cars || cars.length === 0) {
-            return res.status(404).json({ message: "No available cars found" });
-        }
-        return res.json(cars);
+        // if (!cars || cars.length === 0) {
+        //     return res.status(404).json({ message: "No available cars found" });
+        // }
+        return res.status(200).json(cars);
     } catch (error) {
         console.error("Error fetching available cars:", error);
         return res.status(500).json({ message: "Internal Server Error" });

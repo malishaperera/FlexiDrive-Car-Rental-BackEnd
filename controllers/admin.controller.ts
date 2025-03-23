@@ -10,14 +10,14 @@ import {
     isAdminCredentials,
     verifyAdminCredentials
 } from "../databse/admin-client";
-import {generateAccessToken} from "./util/token.controller";
-import {isCustomerCredentials} from "../databse/customer-client";
+
 
 dotenv.config();
 
 
 export const registerAdmin = async (req: Request, res: Response): Promise<any> => {
     const { username, email, password, phone, role } = req.body;
+    console.log(req.body)
 
     const admin: Admin = { username, email, password, phone, role };
 

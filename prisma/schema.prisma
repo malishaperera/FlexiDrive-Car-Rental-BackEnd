@@ -56,12 +56,8 @@ model Car {
   image2          String?
   image3          String?
   createdAt       DateTime         @default(now())
-
   minRentalPeriod Int @default(1)
   maxRentalPeriod Int @default(28)
-
-  // Relationships
-  // bookings Booking[]
   reviews    Review[]
   bookingCar BookingCar[]
 }
@@ -76,16 +72,13 @@ model Booking {
   returnDate    DateTime
   pickupTime    String
   returnTime    String
-
-  // startDate   DateTime
-  // endDate     DateTime
-  // location    String
   status      BookingStatus @default(PENDING)
   totalAmount Decimal
   createdAt   DateTime      @default(now())
 
   // Relationships
-  customer   Customer     @relation(fields: [customerId], references: [customerId])
+  // customer   Customer     @relation(fields: [customerId], references: [customerId])
+  customer   Customer     @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
   bookingCar BookingCar[]
   payment    Payment?
 }
@@ -126,7 +119,9 @@ model Review {
   createdAt  DateTime     @default(now())
 
   // Relationships
-  customer Customer @relation(fields: [customerId], references: [customerId])
+  // customer Customer @relation(fields: [customerId], references: [customerId])
+  // car      Car      @relation(fields: [carId], references: [carId])
+  customer Customer @relation(fields: [customerId], references: [customerId], onDelete: Cascade)
   car      Car      @relation(fields: [carId], references: [carId])
 }
 
